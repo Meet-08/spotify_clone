@@ -1,0 +1,64 @@
+# Global Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Dart/Flutter/Pub related
+.packages
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+**/build/
+
+# Android
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Symbolication / Obfuscation
+app.*.symbols
+app.*.map.json
+
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# STS / Eclipse / Spring
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+!**/src/main/**/build/
+!**/src/test/**/build/

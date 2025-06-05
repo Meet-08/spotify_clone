@@ -1,6 +1,9 @@
 import 'package:client/core/theme/app_palette.dart';
+import 'package:client/features/auth/repositories/auth_remote_repository.dart';
+import 'package:client/features/auth/view/pages/signin_page.dart';
 import 'package:client/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:client/features/auth/view/widgets/custom_field.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatefulWidget {
@@ -51,19 +54,37 @@ class _SignupPageState extends State<SignupPage> {
                 isObscure: true,
               ),
               const SizedBox(height: 20),
-              AuthGradientButton(buttonText: "Sign Up", onPressed: () {}),
+              AuthGradientButton(
+                buttonText: "Sign Up",
+                onPressed: () async {
+                  await AuthRemoteRepository.signup(
+                    name: nameController.text,
+                    email: emailController.text,
+                    password: passwordController.text,
+                  );
+                },
+              ),
               const SizedBox(height: 20),
               RichText(
                 text: TextSpan(
                   text: "Already have an account? ",
                   style: Theme.of(context).textTheme.titleMedium,
                   children: [
-                    const TextSpan(
+                    TextSpan(
                       text: " Sign In",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Palette.gradient2,
                         fontWeight: FontWeight.bold,
                       ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SigninPage(),
+                            ),
+                          );
+                        },
                     ),
                   ],
                 ),

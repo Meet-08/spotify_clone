@@ -1,6 +1,9 @@
 import 'package:client/core/theme/app_palette.dart';
+import 'package:client/features/auth/repositories/auth_remote_repository.dart';
+import 'package:client/features/auth/view/pages/signup_page.dart';
 import 'package:client/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:client/features/auth/view/widgets/custom_field.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SigninPage extends StatefulWidget {
@@ -47,19 +50,36 @@ class _SigninPageState extends State<SigninPage> {
                 isObscure: true,
               ),
               const SizedBox(height: 20),
-              AuthGradientButton(buttonText: "Sign In", onPressed: () {}),
+              AuthGradientButton(
+                buttonText: "Sign In",
+                onPressed: () {
+                  AuthRemoteRepository.signin(
+                    email: emailController.text,
+                    password: passwordController.text,
+                  );
+                },
+              ),
               const SizedBox(height: 20),
               RichText(
                 text: TextSpan(
                   text: "Don't have an account? ",
                   style: Theme.of(context).textTheme.titleMedium,
                   children: [
-                    const TextSpan(
+                    TextSpan(
                       text: " Sign Up",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Palette.gradient2,
                         fontWeight: FontWeight.bold,
                       ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignupPage(),
+                            ),
+                          );
+                        },
                     ),
                   ],
                 ),
