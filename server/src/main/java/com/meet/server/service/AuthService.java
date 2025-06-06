@@ -19,14 +19,15 @@ public class AuthService {
     public ResponseEntity<User> signupUser(User user) {
         var existingUser = userRepository.findByEmail(user.getEmail());
 
-        if (existingUser.isPresent()) throw new CustomException("Email already exist", HttpStatus.BAD_REQUEST);
+        if (existingUser.isPresent())
+            throw new CustomException("User with same email already exist", HttpStatus.BAD_REQUEST);
 
         User savedUser = userRepository.save(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
-    public User signinUser(User user) {
+    public ResponseEntity<User> signinUser(User user) {
         var existingUser = userRepository
                 .findByEmail(user.getEmail())
                 .orElseThrow(
@@ -36,6 +37,6 @@ public class AuthService {
         if (!encoder.matches(user.getPassword(), existingUser.getPassword()))
             throw new CustomException("Incorrect password", HttpStatus.FORBIDDEN);
 
-        return existingUser;
+        return ResponseEntity.ok(existingUser);
     }
 }

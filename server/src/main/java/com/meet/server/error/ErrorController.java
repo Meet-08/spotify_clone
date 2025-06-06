@@ -17,8 +17,10 @@ public class ErrorController {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> customError(CustomException e) {
         System.out.println(e.getMessage());
-        ErrorResponse res = new ErrorResponse(e.getMessage(), e.getStatusCode());
-        return ResponseEntity.status(res.getStatus()).body(res);
+        return ResponseEntity.status(e.getStatusCode())
+                .body(
+                        new ErrorResponse(e.getMessage(), e.getStatusCode())
+                );
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

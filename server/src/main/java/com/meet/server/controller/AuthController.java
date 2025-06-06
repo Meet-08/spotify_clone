@@ -29,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public User signinUser(
+    public ResponseEntity<User> signinUser(
             @Valid @RequestBody SigninRequest user
     ) {
         return authService.signinUser(userWrapper.convertToUser(user));
