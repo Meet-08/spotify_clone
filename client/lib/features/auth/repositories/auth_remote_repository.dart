@@ -30,7 +30,7 @@ class AuthRemoteRepository {
       final resBodyMap = jsonDecode(res.body) as Map<String, dynamic>;
 
       if (res.statusCode != 201) return Left(AppFailure(resBodyMap["message"]));
-      return Right(UserModel.fromMap(resBodyMap));
+      return Right(UserModel.fromMap(resBodyMap["user"]));
     } catch (e) {
       return Left(AppFailure(e.toString()));
     }
@@ -50,7 +50,30 @@ class AuthRemoteRepository {
       final resBodyMap = jsonDecode(res.body) as Map<String, dynamic>;
 
       if (res.statusCode != 200) return Left(AppFailure(resBodyMap["message"]));
-      return Right(UserModel.fromMap(resBodyMap));
+      return Right(
+        UserModel.fromMap(
+          resBodyMap["user"],
+        ).copyWith(token: resBodyMap["token"]),
+      );
+    } catch (e) {
+      return Left(AppFailure(e.toString()));
+    }
+  }
+
+  Future<Either<AppFailure, UserModel>> getCurrentUser(String token) async {
+    try {
+      final res = await http.get(
+        Uri.parse("${ServerConstant.baseUrl}/auth"),
+        headers: {
+          "content-type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      final resBodyMap = jsonDecode(res.body) as Map<String, dynamic>;
+      if (res.statusCode != 200) {
+        return Left(AppFailure("Something went wrong"));
+      }
+      return Right(UserModel.fromMap(resBodyMap).copyWith(token: token));
     } catch (e) {
       return Left(AppFailure(e.toString()));
     }
