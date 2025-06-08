@@ -23,7 +23,6 @@ public class AuthController {
 
     @GetMapping
     public ResponseEntity<User> currentUserData(Principal principal) {
-        System.out.println("This is called");
         return authService.getCurrentUser(principal.getName());
     }
 

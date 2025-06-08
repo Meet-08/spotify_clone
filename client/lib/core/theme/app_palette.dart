@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Palette {
+  static const cardColor = Color.fromRGBO(30, 30, 30, 1);
   static const greenColor = Colors.green;
   static const subtitleText = Color(0xffa7a7a7);
   static const inactiveBottomBarItemColor = Color(0xffababab);
