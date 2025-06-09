@@ -1,11 +1,16 @@
 package com.meet.server.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Song {
 
     @Id
@@ -16,7 +21,8 @@ public class Song {
 
     private String artist;
 
-    private String color;
+    @Column(length = 6)
+    private String hexCode;
 
     private String songUrl;
 

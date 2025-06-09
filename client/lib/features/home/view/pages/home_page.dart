@@ -8,7 +8,6 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserNotifierProvider);
-    print(user);
     return const Scaffold();
   }
 }

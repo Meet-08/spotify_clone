@@ -34,7 +34,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(
                         req -> req
-                                .requestMatchers("/v1/auth/signin", "v1/auth/signup")
+                                .requestMatchers("/v1/auth/signin", "/v1/auth/signup")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

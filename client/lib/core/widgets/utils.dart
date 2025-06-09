@@ -40,3 +40,14 @@ Future<File?> pickImage() async {
     return null;
   }
 }
+
+String rgbToHex(Color color) {
+  final red = (color.r * 255).toInt().toRadixString(16).padLeft(2, '0');
+  final green = (color.g * 255).toInt().toRadixString(16).padLeft(2, '0');
+  final blue = (color.b * 255).toInt().toRadixString(16).padLeft(2, '0');
+  return "$red$blue$green";
+}
+
+Color hexToColor(String hex) {
+  return Color(int.parse(hex, radix: 16) + 0xFF000000);
+}
