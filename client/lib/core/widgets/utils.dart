@@ -42,12 +42,27 @@ Future<File?> pickImage() async {
 }
 
 String rgbToHex(Color color) {
-  final red = (color.r * 255).toInt().toRadixString(16).padLeft(2, '0');
-  final green = (color.g * 255).toInt().toRadixString(16).padLeft(2, '0');
-  final blue = (color.b * 255).toInt().toRadixString(16).padLeft(2, '0');
-  return "$red$blue$green";
+  final alpha = ((color.a * 255.0).round() & 0xff)
+      .toRadixString(16)
+      .padLeft(2, '0');
+  final red = ((color.r * 255.0).round() & 0xff)
+      .toRadixString(16)
+      .padLeft(2, '0');
+  final green = ((color.g * 255.0).round() & 0xff)
+      .toRadixString(16)
+      .padLeft(2, '0');
+  final blue = ((color.b * 255.0).round() & 0xff)
+      .toRadixString(16)
+      .padLeft(2, '0');
+  return '$alpha$red$green$blue'.toUpperCase();
 }
 
 Color hexToColor(String hex) {
-  return Color(int.parse(hex, radix: 16) + 0xFF000000);
+  return Color(int.parse(hex, radix: 16));
+}
+
+String formatDuration(Duration duration) {
+  final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+  final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+  return '$minutes:$seconds';
 }

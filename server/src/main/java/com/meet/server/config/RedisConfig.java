@@ -1,19 +1,41 @@
 package com.meet.server.config;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.util.StringJoiner;
 
 @Configuration
+@EnableCaching
 public class RedisConfig {
 
     @Bean
-    public RedisCacheConfiguration cacheConfiguration() {
-        return RedisCacheConfiguration
-                .defaultCacheConfig();
+    public RedisCacheConfiguration cacheConfig() {
+        // Use Jackson to serialize JSON
+        Jackson2JsonRedisSerializer<Object> serializer =
+                new Jackson2JsonRedisSerializer<>(Object.class);
+
+        return RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(serializer))
+                .disableCachingNullValues();
+    }
+
+    @Bean
+    public RedisCacheManager cacheManager(RedisConnectionFactory factory) {
+        return RedisCacheManager.builder(factory)
+                .cacheDefaults(cacheConfig())
+                .build();
     }
 
     @Bean("customKeyGenerator")

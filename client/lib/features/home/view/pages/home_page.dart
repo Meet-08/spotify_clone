@@ -15,6 +15,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   int selectedIndex = 0;
   final List<Widget> pages = const [SongsPage(), LibraryPage()];
+  // final List<Widget> pages = const [UploadSongPage(), LibraryPage()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

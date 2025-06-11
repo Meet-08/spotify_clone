@@ -5,6 +5,7 @@ import com.meet.server.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class SongService {
 
     private final SongRepository songRepository;
     private final CloudinaryService cloudinaryService;
+    private final ApplicationContext context;
 
     public ResponseEntity<Song> uploadSong(Song song, MultipartFile thumbnail, MultipartFile songFile)
             throws IOException {
@@ -30,7 +32,7 @@ public class SongService {
         song.setThumbnailUrl(thumbnailUploadResult.get("url").toString());
 
         Song savedSong = songRepository.save(song);
-        clearSongCache();
+        context.getBean(SongService.class).clearSongCache();
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSong);
     }
 

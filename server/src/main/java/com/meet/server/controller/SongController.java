@@ -26,7 +26,6 @@ public class SongController {
             @Valid @RequestPart MultipartFile thumbnail,
             @Valid @RequestPart MultipartFile songFile
     ) throws IOException {
-        System.out.println(hexCode);
         Song song = Song.builder()
                 .songName(songName)
                 .artist(artist)
@@ -39,4 +38,5 @@ public class SongController {
     public ResponseEntity<List<Song>> listSong() {
         return ResponseEntity.ok(songService.getAllSongs());
     }
+    
 }

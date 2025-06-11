@@ -6,14 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Song implements Serializable {
+public class Song {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
