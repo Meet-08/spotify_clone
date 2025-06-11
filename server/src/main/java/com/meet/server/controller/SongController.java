@@ -37,6 +37,6 @@ public class SongController {
 
     @GetMapping("/list")
     public ResponseEntity<List<Song>> listSong() {
-        return songService.getAllSongs();
+        return ResponseEntity.ok(songService.getAllSongs());
     }
 }

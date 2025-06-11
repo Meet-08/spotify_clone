@@ -3,6 +3,8 @@ package com.meet.server.service;
 import com.meet.server.model.Song;
 import com.meet.server.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,8 +21,8 @@ public class SongService {
     private final SongRepository songRepository;
     private final CloudinaryService cloudinaryService;
 
-
-    public ResponseEntity<Song> uploadSong(Song song, MultipartFile thumbnail, MultipartFile songFile) throws IOException {
+    public ResponseEntity<Song> uploadSong(Song song, MultipartFile thumbnail, MultipartFile songFile)
+            throws IOException {
         Map<?, ?> thumbnailUploadResult = cloudinaryService.uploadImage(thumbnail);
         Map<?, ?> songUploadResult = cloudinaryService.uploadAudio(songFile);
 
@@ -28,11 +30,17 @@ public class SongService {
         song.setThumbnailUrl(thumbnailUploadResult.get("url").toString());
 
         Song savedSong = songRepository.save(song);
-
+        clearSongCache();
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSong);
     }
 
-    public ResponseEntity<List<Song>> getAllSongs() {
-        return ResponseEntity.ok(songRepository.findAll());
+    @Cacheable(value = "songs", keyGenerator = "customKeyGenerator")
+    public List<Song> getAllSongs() {
+        return songRepository.findAll();
+    }
+
+    @CacheEvict(value = "songs", allEntries = true)
+    public void clearSongCache() {
+        System.out.println("Clearing song cache...");
     }
 }
