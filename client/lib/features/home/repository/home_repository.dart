@@ -79,4 +79,57 @@ class HomeRepository {
       return Left(AppFailure(e.toString()));
     }
   }
+
+  Future<Either<AppFailure, bool>> favSong({
+    required String token,
+    required int songId,
+  }) async {
+    try {
+      final res = await http.post(
+        Uri.parse("${ServerConstant.baseUrl}/song/favorite"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        body: jsonEncode({
+          "song": {"id": songId},
+        }),
+      );
+
+      var resBodyMap = jsonDecode(res.body);
+
+      if (res.statusCode != 200) {
+        return Left(AppFailure("Something went wrong"));
+      }
+
+      return Right(resBodyMap["message"]);
+    } catch (e) {
+      return Left(AppFailure(e.toString()));
+    }
+  }
+
+  Future<Either<AppFailure, List<SongModel>>> getAllFavSongs({
+    required String token,
+  }) async {
+    try {
+      final res = await http.get(
+        Uri.parse("${ServerConstant.baseUrl}/song/list/favorite"),
+        headers: {"Authorization": "Bearer $token"},
+      );
+
+      var resBodyMap = jsonDecode(res.body) as List;
+
+      if (res.statusCode != 200) {
+        return Left(AppFailure("Something went wrong"));
+      }
+
+      List<SongModel> songs = [];
+      for (var element in resBodyMap) {
+        songs.add(SongModel.fromMap(element["song"]));
+      }
+      return Right(songs);
+    } catch (e) {
+      return Left(AppFailure(e.toString()));
+    }
+  }
 }
